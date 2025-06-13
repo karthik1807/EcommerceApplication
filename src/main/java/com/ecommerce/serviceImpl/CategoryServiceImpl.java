@@ -12,7 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.dto.CategoryDTO;
-import com.ecommerce.exceptions.APIexception;
+import com.ecommerce.exceptions.APIException;
 import com.ecommerce.model.Category;
 import com.ecommerce.payload.CategoryRequest;
 import com.ecommerce.payload.CategoryResponse;
@@ -38,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService{
 		
 		List<Category> categories = categoryPage.getContent();
 		if(categories.isEmpty()) {
-			throw new APIexception("No category created till now");
+			throw new APIException("No category created till now");
 		}
 		
 		List<CategoryDTO> categoryDTOS = new ArrayList<>();
@@ -62,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService{
 		
 		Category existingCategory  = categoryRepository.findByCategoryName(categoryRequest.getCategoryName());
 		if(existingCategory  != null) {
-			throw new APIexception("Category with name " + categoryRequest.getCategoryName() + " already exists !!");
+			throw new APIException("Category with name " + categoryRequest.getCategoryName() + " already exists !!");
 		}
 		
 		Category category = modelMapper.map(categoryRequest, Category.class);
@@ -75,7 +75,7 @@ public class CategoryServiceImpl implements CategoryService{
 	@Override
     public CategoryDTO deleteCategory(Long categoryId) {
 		Category delCategory = categoryRepository.findById(categoryId)
-				.orElseThrow(() -> new APIexception("Category not found with id "+ categoryId));
+				.orElseThrow(() -> new APIException("Category not found with id "+ categoryId));
 		categoryRepository.delete(delCategory);
 		
 		return modelMapper.map(delCategory, CategoryDTO.class);
@@ -84,7 +84,7 @@ public class CategoryServiceImpl implements CategoryService{
 	@Override
     public CategoryDTO updateCategory(CategoryRequest categoryRequest, Long categoryId) {
 		Category existingCategory = categoryRepository.findById(categoryId)
-				.orElseThrow(() -> new APIexception("Resource not found"));
+				.orElseThrow(() -> new APIException("Resource not found"));
 		Category category =  modelMapper.map(categoryRequest, Category.class);
 		category.setCategoryId(existingCategory.getCategoryId());
 		

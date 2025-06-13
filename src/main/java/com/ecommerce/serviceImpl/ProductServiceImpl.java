@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.dto.ProductDTO;
-import com.ecommerce.exceptions.APIexception;
+import com.ecommerce.exceptions.APIException;
 import com.ecommerce.exceptions.ResourceNotFoundException;
 import com.ecommerce.model.Category;
 import com.ecommerce.model.Product;
@@ -91,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = pageProducts.getContent();
 
         if(products.isEmpty()){
-            throw new APIexception(category.getCategoryName() + " category does not have any products");
+            throw new APIException(category.getCategoryName() + " category does not have any products");
         }
         
                 List<ProductDTO> productDTOS = products.stream()
